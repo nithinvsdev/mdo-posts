@@ -1,0 +1,25 @@
+name: Build and Test App
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to DockerHub
+        id: login
+        run: docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_PASSWORD}}
+      - name: Build the docker image
+        id: build
+        run: doker build . --file DockerFile --tag $ {{secrets.DOCKER_USER}}
+          mdo-posts:$(git rev-parse --short "$GITHUB_SHA")
+      - name: Push the Docker image
+        id: push
+        run: docker push ${{secrets.DOCKER_USER}}/mdo-posts:(git rev-parse --shirt
+          "$GITHUB_SHA")
+
